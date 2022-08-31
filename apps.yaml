@@ -1,7 +1,7 @@
 REST: true
 APPS:
 #---------------------------------------------------------------------------------------
-# projects
+# 1 projects
 #
   - app_name: projects
     model:
@@ -13,7 +13,7 @@ APPS:
         db_table: projects
       str: name
 #---------------------------------------------------------------------------------------
-# questions
+# 2 questions
 #
   - app_name: questions
     model:
@@ -28,7 +28,7 @@ APPS:
       meta:
         db_table: questions
 #---------------------------------------------------------------------------------------
-# question_answeralternatives
+# 3 question_answeralternatives
 #
   - app_name: question_answeralternatives
     model:
@@ -45,7 +45,7 @@ APPS:
       meta:
         db_table: question_answeralternatives
 #---------------------------------------------------------------------------------------
-# question_statements
+# 4 question_statements
 #
   - app_name: question_statements
     model:
@@ -62,7 +62,7 @@ APPS:
       meta:
         db_table: question_statements
 #---------------------------------------------------------------------------------------
-# surveys
+# 5 surveys
 #
   - app_name: surveys
     model:
@@ -78,7 +78,7 @@ APPS:
         db_table: surveys
       str: None
 #---------------------------------------------------------------------------------------
-# survey_pages
+# 6 survey_pages
 #
   - app_name: survey_pages
     model:
@@ -95,7 +95,7 @@ APPS:
       meta:
         db_table: survey_pages
 #---------------------------------------------------------------------------------------
-# survey_page_questions
+# 7 survey_page_questions
 #
   - app_name: survey_page_questions
     model:
@@ -114,7 +114,7 @@ APPS:
       meta:
         db_table: survey_page_questions
 #---------------------------------------------------------------------------------------
-# survey_page_question_answeralternatives
+# 9 survey_page_question_answeralternatives
 #
   - app_name: survey_page_question_answeralternatives
     model:
