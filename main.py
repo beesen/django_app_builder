@@ -8,8 +8,9 @@ from utils import read_yaml_file, create_app_files
 def print_hi(name):
     data = read_yaml_file()
     apps = data['APPS']
+    rest = data['REST']
     for app in apps:
-        create_app_files(app)
+        create_app_files(app, rest)
 
 
 # Press the green button in the gutter to run the script.
