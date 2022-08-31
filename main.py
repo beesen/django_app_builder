@@ -2,11 +2,14 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from utils import read_yaml_file, create_app_files
 
 
 def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    data = read_yaml_file()
+    apps = data['APPS']
+    for app in apps:
+        create_app_files(app)
 
 
 # Press the green button in the gutter to run the script.

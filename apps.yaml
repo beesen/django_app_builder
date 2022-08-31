@@ -1,0 +1,40 @@
+#===============================================================================
+# file with apps
+#  - app_name: ...
+#    model:
+#      name: ...
+#      fields:
+#        - name: ...
+#          type: ...
+#      meta:
+#        ordering: []
+#        db_table: ...
+#      str: ...
+#===============================================================================
+APPS:
+  - app_name: surveys
+    model:
+      name: Survey
+      fields:
+        - name: project
+          type: ForeignKey
+        - name: name
+          type: CharField
+      meta:
+        ordering: [project_id, name]
+        db_table: survey_pages
+      str: None
+
+  - app_name: items
+    model:
+      name: Item
+      fields:
+        - name: item_type
+          type: ForeignKey
+        - name: answer_type
+          type: ForeignKey
+      meta:
+        ordering: []
+        db_table: items
+      str: None
+
