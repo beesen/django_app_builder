@@ -1,75 +1,95 @@
 import yaml
+from jinja2 import Environment, FileSystemLoader
 from yaml import SafeLoader
 
 
-def read_yaml_file():
+def read_apps_yaml_file():
     YAML_FILE = "apps.yaml"
     # Open the file and load the file
     with open(YAML_FILE) as f:
+        # return data as dictionary
         data = yaml.load(f, Loader=SafeLoader)
     return data
 
-def create_app_model(app_name, model):
+
+def create_model(app, environment, template_name):
     # create models.py
-    fields = model['fields']
-    meta = model['meta']
-    str = model['str']
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
     return
 
-def create_app_view(app_name, model):
+
+def create_views(app, environment, template_name):
     # create views.py
-    fields = model['fields']
-    meta = model['meta']
-    str = model['str']
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
     return
 
-def create_app_serializerview(app_name, model):
-    # create views.py
-    fields = model['fields']
-    meta = model['meta']
-    str = model['str']
+
+def create_templates(app, environment, template_name):
+    # create urls.py
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
     return
 
-def create_app_serializer(app_name, model):
+
+def create_urls(app, environment, template_name):
+    # create urls.py
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
+    return
+
+
+def create_serializer(app, environment, template_name):
     # create serializers.py
-    fields = model['fields']
-    meta = model['meta']
-    str = model['str']
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
     return
 
-def create_app_templates(app_name, model):
-    # create urls.py
-    fields = model['fields']
-    meta = model['meta']
-    str = model['str']
+
+def create_serializer_views(app, environment, template_name):
+    # create views.py
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
     return
 
-def create_app_url(app_name, model):
+
+def create_serializer_urls(app, environment, template_name):
     # create urls.py
-    fields = model['fields']
-    meta = model['meta']
-    str = model['str']
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
     return
 
-def create_app_admin(app_name, model):
+
+def create_admin(app, environment, template_name):
     # create urls.py
-    fields = model['fields']
-    meta = model['meta']
-    str = model['str']
+    template = environment.get_template(template_name)
+    rend = template.render(app)
+    print(rend)
     return
+
 
 def create_app_files(app, rest):
-    app_name = app['app_name']
-    model = app['model']
-    serializer = True
-    create_app_model(app_name, model)
-    if rest:
-        create_app_serializerview(app_name, model)
-        create_app_serializer(app_name, model)
-    else:
-        create_app_view(app_name, model)
-        create_app_templates(app_name, model)
-    create_app_serializer(app_name, model)
-    create_app_url(app_name, model)
-    create_app_admin(app_name, model)
+    environment = Environment(
+        loader=FileSystemLoader("templates/"),
+        trim_blocks=True,
+        lstrip_blocks=True
+    )
+    create_model(app, environment, "models.txt")
+    # if rest:
+    # create_serializer(app_name, model)
+    # create_serializer_views(app_name, model)
+    # create_serializer_urls(app_name, model)
+    # else:
+    #     create_templates(app_name, model)
+    #     create_views(app_name, model)
+    #     create_urls(app_name, model)
+    # create_admin(app_name, model)
     return

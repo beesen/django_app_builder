@@ -13,16 +13,68 @@
 #===============================================================================
 REST: true
 APPS:
+  - app_name: projects
+    model:
+      name: Project
+      fields:
+        - name: name
+          type: CharField
+      meta:
+        db_table: projects
+      str: name
+
+  - app_name: questions
+    model:
+      name: Question
+      fields:
+        - name: project
+          type: ForeignKey
+          app_name: projects
+          model_name: Project
+        - name: question_text
+          type: CharField
+      meta:
+        db_table: questions
+
+  - app_name: question_answeralternatives
+    model:
+      name: QuestionAnswerAlternative
+      fields:
+        - name: question
+          type: ForeignKey
+          app_name: questions
+          model_name: Question
+        - name: question_text
+          type: CharField
+      meta:
+        db_table: questions
+
   - app_name: surveys
     model:
       name: Survey
       fields:
         - name: project
           type: ForeignKey
+          app_name: projects
+          model_name: Project
         - name: name
           type: CharField
       meta:
         ordering: [project_id, name]
+        db_table: surveys
+      str: name
+
+  - app_name: survey_pages
+    model:
+      name: SurveyPage
+      fields:
+        - name: survey
+          type: ForeignKey
+          app_name: surveys
+          model_name: Survey
+        - name: page_sequence_nr
+          type: IntegerField
+      meta:
         db_table: survey_pages
       str: None
 
@@ -32,10 +84,13 @@ APPS:
       fields:
         - name: item_type
           type: ForeignKey
+          app_name: item_types
+          model_name: ItemType
         - name: answer_type
           type: ForeignKey
+          app_name: answer_types
+          model_name: AnswerType
       meta:
         ordering: []
         db_table: items
       str: None
-
