@@ -1,18 +1,8 @@
-#===============================================================================
-# file with apps
-#  - app_name: ...
-#    model:
-#      name: ...
-#      fields:
-#        - name: ...
-#          type: ...
-#      meta:
-#        ordering: []
-#        db_table: ...
-#      str: ...
-#===============================================================================
 REST: true
 APPS:
+#---------------------------------------------------------------------------------------
+# projects
+#
   - app_name: projects
     model:
       name: Project
@@ -22,7 +12,9 @@ APPS:
       meta:
         db_table: projects
       str: name
-
+#---------------------------------------------------------------------------------------
+# questions
+#
   - app_name: questions
     model:
       name: Question
@@ -35,7 +27,9 @@ APPS:
           type: CharField
       meta:
         db_table: questions
-
+#---------------------------------------------------------------------------------------
+# question_answeralternatives
+#
   - app_name: question_answeralternatives
     model:
       name: QuestionAnswerAlternative
@@ -44,14 +38,35 @@ APPS:
           type: ForeignKey
           app_name: questions
           model_name: Question
-        - name: question_text
+        - name: answeralternative_text
           type: CharField
+        - name: answeralternative_sequence_nr
+          type: IntegerField
       meta:
-        db_table: questions
-
+        db_table: question_answeralternatives
+#---------------------------------------------------------------------------------------
+# question_statements
+#
+  - app_name: question_statements
+    model:
+      name: QuestionStatement
+      fields:
+        - name: question
+          type: ForeignKey
+          app_name: questions
+          model_name: Question
+        - name: statement_text
+          type: CharField
+        - name: statement_sequence_nr
+          type: IntegerField
+      meta:
+        db_table: question_statements
+#---------------------------------------------------------------------------------------
+# surveys
+#
   - app_name: surveys
     model:
-      name: Survey
+      name: Surveys
       fields:
         - name: project
           type: ForeignKey
@@ -60,10 +75,11 @@ APPS:
         - name: name
           type: CharField
       meta:
-        ordering: [project_id, name]
         db_table: surveys
-      str: name
-
+      str: None
+#---------------------------------------------------------------------------------------
+# survey_pages
+#
   - app_name: survey_pages
     model:
       name: SurveyPage
@@ -74,23 +90,47 @@ APPS:
           model_name: Survey
         - name: page_sequence_nr
           type: IntegerField
+        - name: page_text
+          type: CharField
       meta:
         db_table: survey_pages
-      str: None
-
-  - app_name: items
+#---------------------------------------------------------------------------------------
+# survey_page_questions
+#
+  - app_name: survey_page_questions
     model:
-      name: Item
+      name: SurveyPageQuestion
       fields:
-        - name: item_type
+        - name: survey_page
           type: ForeignKey
-          app_name: item_types
-          model_name: ItemType
-        - name: answer_type
+          app_name: survey_pages
+          model_name: SurveyPage
+        - name: question
           type: ForeignKey
-          app_name: answer_types
-          model_name: AnswerType
+          app_name: questions
+          model_name: Question
+        - name: question_sequence_nr
+          type: IntegerField
       meta:
-        ordering: []
-        db_table: items
-      str: None
+        db_table: survey_page_questions
+#---------------------------------------------------------------------------------------
+# survey_page_question_answeralternatives
+#
+  - app_name: survey_page_question_answeralternatives
+    model:
+      name: SurveyPageQuestionAnswerAlternative
+      fields:
+        - name: survey_page_question
+          type: ForeignKey
+          app_name: survey_page_question
+          model_name: SurveyPageQuestions
+        - name: question_answeralternative
+          type: ForeignKey
+          app_name: questions_answeralternatives
+          model_name: QuestionAnswerAlternative
+        - name: next_survey_page
+          type: ForeignKey
+          app_name: survey_pages
+          model_name: SurveyPage
+      meta:
+        db_table: survey_page_question_answeralternatives
