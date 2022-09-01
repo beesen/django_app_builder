@@ -1,16 +1,19 @@
 PROJECT: test
-PATH: test/
+PROJECT_PATH: test/
 REST: true
+REMOVE_UNUSED: true
 APPS:
 #---------------------------------------------------------------------------------------
 # 1 projects
 #
   - app_name: projects
+    use: false
     model:
       name: Project
       fields:
         - name: name
           type: CharField
+          max_length: 256
       meta:
         db_table: projects
       str: name
@@ -18,21 +21,24 @@ APPS:
 # 2 questions
 #
   - app_name: questions
+    use: false
     model:
       name: Question
       fields:
         - name: project
           type: ForeignKey
-          app_name: projects
           model_name: Project
+          app_name: projects
         - name: question_text
           type: CharField
+          max_length: 256
       meta:
         db_table: questions
 #---------------------------------------------------------------------------------------
 # 3 question_answeralternatives
 #
   - app_name: question_answeralternatives
+    use: false
     model:
       name: QuestionAnswerAlternative
       fields:
@@ -42,6 +48,7 @@ APPS:
           model_name: Question
         - name: answeralternative_text
           type: CharField
+          max_length: 256
         - name: answeralternative_sequence_nr
           type: IntegerField
       meta:
@@ -50,6 +57,7 @@ APPS:
 # 4 question_statements
 #
   - app_name: question_statements
+    use: false
     model:
       name: QuestionStatement
       fields:
@@ -59,6 +67,7 @@ APPS:
           model_name: Question
         - name: statement_text
           type: CharField
+          max_length: 256
         - name: statement_sequence_nr
           type: IntegerField
       meta:
@@ -67,6 +76,7 @@ APPS:
 # 5 surveys
 #
   - app_name: surveys
+    use: false
     model:
       name: Surveys
       fields:
@@ -76,6 +86,7 @@ APPS:
           model_name: Project
         - name: name
           type: CharField
+          max_length: 256
       meta:
         db_table: surveys
       str: None
@@ -83,6 +94,7 @@ APPS:
 # 6 survey_pages
 #
   - app_name: survey_pages
+    use: false
     model:
       name: SurveyPage
       fields:
@@ -94,12 +106,14 @@ APPS:
           type: IntegerField
         - name: page_text
           type: CharField
+          max_length: 256
       meta:
         db_table: survey_pages
 #---------------------------------------------------------------------------------------
 # 7 survey_page_questions
 #
   - app_name: survey_page_questions
+    use: false
     model:
       name: SurveyPageQuestion
       fields:
@@ -119,6 +133,7 @@ APPS:
 # 9 survey_page_question_answeralternatives
 #
   - app_name: survey_page_question_answeralternatives
+    use: false
     model:
       name: SurveyPageQuestionAnswerAlternative
       fields:
@@ -136,3 +151,25 @@ APPS:
           model_name: SurveyPage
       meta:
         db_table: survey_page_question_answeralternatives
+#---------------------------------------------------------------------------------------
+# 10 questiontypes
+#
+  - app_name: questiontypes
+    use: true
+    model:
+      name: QuestionType
+      fields:
+        - name: name
+          type: CharField
+          max_length: 256
+          unique: true
+        - name: has_answeralternatives
+          type: BooleanField
+          default: false
+        - name: has_statements
+          type: BooleanField
+          default: false
+      meta:
+        db_table: questiontypes
+        ordering:
+          - 'name'

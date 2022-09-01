@@ -1,17 +1,13 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-from utils import read_apps_yaml_file, create_project
+from file_builder import create_django_files
+from utils import read_apps_yaml_file
 
 
 def do_it():
     project = read_apps_yaml_file()
-    create_project(project)
+    print(f"... creating files for project {project['PROJECT']}")
+    create_django_files(project)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     do_it()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

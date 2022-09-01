@@ -15,11 +15,14 @@ class {{model.name}}(models.Model):
         {% if field.type == 'ForeignKey' %}
     {{field.name}} = models.{{field.type}}({{field.model_name}}, on_delete=models.CASCADE)
         {% elif field.type == 'CharField' %}
-    {{field.name}} = models.{{field.type}}(max_length=1024)
+    {{field.name}} = models.{{field.type}}(max_length={{field.max_length}}, unique={{field.unique}})
         {% else %}
-    {{field.name}} = models.{{field.type}}()
+    {{field.name}} = models.{{field.type}}(default={{field.default}})
         {% endif %}
     {% endfor %}
 
     class Meta:
-        db_table = '{{model.meta.db_table}}'
+        {% if model.meta.ordering %}
+        ordering = ["{{model.meta.ordering| join("\", \"") }}"]
+        {% endif %}
+        db_table = "{{model.meta.db_table}}"
