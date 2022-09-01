@@ -3,9 +3,9 @@ PROJECT_PATH: test/
 REST: true
 REMOVE_UNUSED: true
 APPS:
-#---------------------------------------------------------------------------------------
-# 1 projects
-#
+  #---------------------------------------------------------------------------------------
+  # 1 projects
+  #
   - app_name: projects
     use: false
     model:
@@ -17,9 +17,9 @@ APPS:
       meta:
         db_table: projects
       str: name
-#---------------------------------------------------------------------------------------
-# 2 questions
-#
+  #---------------------------------------------------------------------------------------
+  # 2 questions
+  #
   - app_name: questions
     use: false
     model:
@@ -34,9 +34,9 @@ APPS:
           max_length: 256
       meta:
         db_table: questions
-#---------------------------------------------------------------------------------------
-# 3 question_answeralternatives
-#
+  #---------------------------------------------------------------------------------------
+  # 3 question_answeralternatives
+  #
   - app_name: question_answeralternatives
     use: false
     model:
@@ -53,9 +53,9 @@ APPS:
           type: IntegerField
       meta:
         db_table: question_answeralternatives
-#---------------------------------------------------------------------------------------
-# 4 question_statements
-#
+  #---------------------------------------------------------------------------------------
+  # 4 question_statements
+  #
   - app_name: question_statements
     use: false
     model:
@@ -72,9 +72,9 @@ APPS:
           type: IntegerField
       meta:
         db_table: question_statements
-#---------------------------------------------------------------------------------------
-# 5 surveys
-#
+  #---------------------------------------------------------------------------------------
+  # 5 surveys
+  #
   - app_name: surveys
     use: false
     model:
@@ -90,9 +90,9 @@ APPS:
       meta:
         db_table: surveys
       str: None
-#---------------------------------------------------------------------------------------
-# 6 survey_pages
-#
+  #---------------------------------------------------------------------------------------
+  # 6 survey_pages
+  #
   - app_name: survey_pages
     use: false
     model:
@@ -109,9 +109,9 @@ APPS:
           max_length: 256
       meta:
         db_table: survey_pages
-#---------------------------------------------------------------------------------------
-# 7 survey_page_questions
-#
+  #---------------------------------------------------------------------------------------
+  # 7 survey_page_questions
+  #
   - app_name: survey_page_questions
     use: false
     model:
@@ -129,9 +129,9 @@ APPS:
           type: IntegerField
       meta:
         db_table: survey_page_questions
-#---------------------------------------------------------------------------------------
-# 9 survey_page_question_answeralternatives
-#
+  #---------------------------------------------------------------------------------------
+  # 9 survey_page_question_answeralternatives
+  #
   - app_name: survey_page_question_answeralternatives
     use: false
     model:
@@ -151,11 +151,11 @@ APPS:
           model_name: SurveyPage
       meta:
         db_table: survey_page_question_answeralternatives
-#---------------------------------------------------------------------------------------
-# 10 questiontypes
-#
+  #---------------------------------------------------------------------------------------
+  # 10 questiontypes
+  #
   - app_name: questiontypes
-    use: true
+    use: false
     model:
       name: QuestionType
       fields:
@@ -173,3 +173,71 @@ APPS:
         db_table: questiontypes
         ordering:
           - 'name'
+  #---------------------------------------------------------------------------------------
+  # 11 testing with most used model fields
+  #
+  - app_name: tests
+    use: true
+    model:
+      name: Test
+      fields:
+        - name: name_1
+          type: BooleanField
+          default: false
+        - name: name_2
+          type: CharField
+          max_length: 10
+        - name: name_3
+          type: DateField
+          auto_now: true
+          auto_now_add: true
+        - name: name_4
+          type: DateTimeField
+          auto_now: true
+          auto_now_add: true
+        - name: name_5
+          type: DecimalField
+          max_digits: 10
+          max_decimal_places: 2
+        - name: name_6
+          type: EmailField
+          max_length: 10
+        - name: name_7
+          type: FileField
+          upload_to: path
+          storage: none
+          max_length: 100
+        - name: name_8
+          type: ImageField
+          upload_to: path
+          height_field: none
+          width_field: none
+          max_length: 100
+        - name: name_9
+          type: IntegerField
+        - name: name_10
+          type: TextField
+        - name: name_11
+          type: URLField
+          max_length: 200
+        - name: name_12
+          type: UUIDField
+        - name: name_13
+          type: ForeignKey
+          to: field
+          on_delete: CASCADE
+          blank: true
+          null: true
+        - name: name_14
+          type: ManyToManyField
+          to: field
+          on_delete: CASCADE
+          blank: true
+          null: true
+        - name: name_15
+          type: OneToOneField
+          to: field
+          on_delete: CASCADE
+          parent_link: false
+      meta:
+        db_table: tests

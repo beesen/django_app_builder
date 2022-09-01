@@ -13,9 +13,12 @@ from {{ field.app_name }}.models import {{ field.model_name }}
 class {{model.name}}(models.Model):
     {% for field in model.fields %}
         {% if field.type == 'ForeignKey' %}
+{# handle ForeignKey #}
     {{field.name}} = models.{{field.type}}({{field.model_name}}, on_delete=models.CASCADE)
         {% elif field.type == 'CharField' %}
-    {{field.name}} = models.{{field.type}}(max_length={{field.max_length}}, unique={{field.unique}})
+    {% include 'model/charfield.txt' -%}
+        {% elif field.type == 'NumberField' %}
+    {% include 'model/numberfield.txt' -%}
         {% else %}
     {{field.name}} = models.{{field.type}}(default={{field.default}})
         {% endif %}

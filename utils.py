@@ -5,10 +5,9 @@ import yaml
 from yaml import SafeLoader
 
 
-def read_apps_yaml_file():
-    YAML_FILE = "apps.yaml"
+def read_yaml_file(yaml_file):
     # Open the file and load the file
-    with open(YAML_FILE) as f:
+    with open(yaml_file) as f:
         # return data as dictionary
         data = yaml.load(f, Loader=SafeLoader)
     return data

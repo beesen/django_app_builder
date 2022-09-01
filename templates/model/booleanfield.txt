@@ -1,0 +1,3 @@
+{# template for booleanfield #}
+    {{field.name}} = models.{{field.type}}({% if field.default %}default={{field.default}}{%endif %})
+

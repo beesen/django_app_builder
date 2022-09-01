@@ -6,10 +6,34 @@ from jinja2 import Environment, FileSystemLoader
 from utils import check_path, remove_path
 
 
-def create_file(app, environment, project_path, unit):
+def build_field_strings(fields):
+    field_string = ''
+    for field in fields:
+        fieldtype = fields['type']
+        if fieldtype == 'ForeignKey':
+            pass
+        elif fieldtype == 'CharField':
+            pass
+        elif fieldtype == 'IntegerField':
+            pass
+    return 'hola'
+
+
+def check_model_fields(fields, setup):
+    optional_field_arguments = setup['OPTIONAL_FIELD_ARGUMENTS']
+    # first check the optional arguments
+    # loop over all fields of this model
+    for field in fields:
+        # name and type are required, no testing
+        if
+    pass
+
+def create_file(app, environment, project_path, unit, setup = None):
     # create {{units}}.py
     template_name = f"{unit}.txt"
     template = environment.get_template(template_name)
+    if unit == 'models':
+        check_model_fields(app['model']['fields'], setup)
     content = template.render(app)
 
     app_path = project_path + app['app_name'] + '/'
@@ -39,8 +63,8 @@ def create_urls(app, environment, template_name):
     print(content)
 
 
-def create_app_files(rest, app, environment, project_path):
-    create_file(app, environment, project_path, 'models')
+def create_app_files(rest, app, environment, project_path, setup):
+    create_file(app, environment, project_path, 'models', setup)
     if rest:
         create_file(app, environment, project_path, 'serializers')
         create_file(app, environment, project_path, 'views')
@@ -59,7 +83,7 @@ def remove_app_files(app, project_path):
         print(f"{app_path} removed...")
 
 
-def create_django_files(project):
+def create_django_files(project, setup):
     project_path = project['PROJECT_PATH']
     check_path(project_path)
 
@@ -74,7 +98,7 @@ def create_django_files(project):
     # Loop over all apps, only build apps "use"
     for app in apps:
         if app['use']:
-            create_app_files(rest, app, environment, project_path)
+            create_app_files(rest, app, environment, project_path, setup)
         else:
             if project['REMOVE_UNUSED']:
                 # remove path
