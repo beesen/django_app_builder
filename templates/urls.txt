@@ -1,0 +1,10 @@
+#-------------------------------------------------------------------------------
+# urls.py for {{ app_name }}
+#-------------------------------------------------------------------------------
+from django.urls import path
+
+from .views import {{model.name}}ViewSet
+
+urlpatterns = [
+    path(r'{{app_name}}', {{model.name}}ViewSet),
+]

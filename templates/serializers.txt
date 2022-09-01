@@ -1,0 +1,24 @@
+#-------------------------------------------------------------------------------
+# serializers.py for {{ app_name }}
+#-------------------------------------------------------------------------------
+from rest_framework import serializers
+
+from .models import {{model.name}}
+
+{% for field in model.fields %}
+    {% if field.type == 'ForeignKey' %}
+from {{ field.app_name }}.serializers import {{ field.model_name }}Serializer
+    {% endif %}
+{% endfor %}
+
+# Create your models here.
+class {{model.name}}Serializer(serializers.ModelSerializer):
+    {% for field in model.fields %}
+        {% if field.type == 'ForeignKey' %}
+    {{field.name}} = {{field.model_name}}Serializer(many=True)
+        {% endif %}
+    {% endfor %}
+
+    class Meta:
+        model = {{model.name}}
+        fields = "__all__"

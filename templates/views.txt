@@ -1,0 +1,12 @@
+#-------------------------------------------------------------------------------
+# views.py for {{ app_name }}
+#-------------------------------------------------------------------------------
+from rest_framework import serializers
+
+from .models import {{model.name}}
+from .serializers import {{model.name}}Serializer
+
+# Create your views here.
+class {{model.name}}ViewSet(viewsets.ModelViewSet):
+    queryset = {{model.name}}.objects.all()
+    serializer_class = {{model.name}}Serializer

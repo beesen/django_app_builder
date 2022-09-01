@@ -2,15 +2,12 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-from utils import read_apps_yaml_file, create_app_files
+from utils import read_apps_yaml_file, create_project
 
 
 def do_it():
-    data = read_apps_yaml_file()
-    apps = data['APPS']
-    rest = data['REST']
-    for app in apps:
-        create_app_files(app, rest)
+    project = read_apps_yaml_file()
+    create_project(project)
 
 
 # Press the green button in the gutter to run the script.

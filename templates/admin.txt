@@ -1,0 +1,17 @@
+from django.contrib import admin
+
+# Register your models here.
+from .models import
+
+{{model.name}}
+
+
+class {{model.name}}Admin(admin.ModelAdmin):
+    model = {{model.name}}
+    # list_display = ("id", "item_type", "answer_type", "add_text_box_other", "item_text")
+    # list_filter = ("item_type", "answer_type", "add_text_box_other",)
+    # ordering = ("id",)
+    # search_fields = ("item_text",)
+
+
+admin.site.register({{model.name}}, {{model.name}}Admin)
