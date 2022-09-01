@@ -25,8 +25,7 @@ def check_model_fields(fields, setup):
     # loop over all fields of this model
     for field in fields:
         # name and type are required, no testing
-        if
-    pass
+        pass
 
 def create_file(app, environment, project_path, unit, setup = None):
     # create {{units}}.py
