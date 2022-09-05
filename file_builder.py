@@ -6,33 +6,33 @@ from jinja2 import Environment, FileSystemLoader
 from utils import check_path, remove_path
 
 
-def build_field_strings(fields):
-    field_string = ''
-    for field in fields:
-        fieldtype = fields['type']
-        if fieldtype == 'ForeignKey':
+def build_arguments_as_list(field):
+    arguments = []
+    # Loop over all keys in field dict
+    for k, v in field.items():
+        # Skip "name" and "type"
+        if k == 'name' or k == 'type' or k == 'to':
             pass
-        elif fieldtype == 'CharField':
-            pass
-        elif fieldtype == 'IntegerField':
-            pass
-    return 'hola'
+        else:
+            if v == 'none':
+                v = 'None'
+            if k == 'upload_to' or k == 'related_name' :
+                arguments.append(f"{k}='{v}'")
+            else:
+                arguments.append(f"{k}={v}")
+
+    arguments_as_string = ', '.join(arguments)
+    return arguments_as_string
 
 
-def check_model_fields(fields, setup):
-    optional_field_arguments = setup['OPTIONAL_FIELD_ARGUMENTS']
-    # first check the optional arguments
-    # loop over all fields of this model
-    for field in fields:
-        # name and type are required, no testing
-        pass
-
-def create_file(app, environment, project_path, unit, setup = None):
+def create_file(app, environment, project_path, unit):
     # create {{units}}.py
     template_name = f"{unit}.txt"
     template = environment.get_template(template_name)
     if unit == 'models':
-        check_model_fields(app['model']['fields'], setup)
+        # Loop over all fields of this model
+        for field in app['model']['fields']:
+            field['arguments'] = build_arguments_as_list(field)
     content = template.render(app)
 
     app_path = project_path + app['app_name'] + '/'
@@ -62,8 +62,8 @@ def create_urls(app, environment, template_name):
     print(content)
 
 
-def create_app_files(rest, app, environment, project_path, setup):
-    create_file(app, environment, project_path, 'models', setup)
+def create_app_files(rest, app, environment, project_path):
+    create_file(app, environment, project_path, 'models')
     if rest:
         create_file(app, environment, project_path, 'serializers')
         create_file(app, environment, project_path, 'views')
@@ -82,7 +82,7 @@ def remove_app_files(app, project_path):
         print(f"{app_path} removed...")
 
 
-def create_django_files(project, setup):
+def create_django_files(project):
     project_path = project['PROJECT_PATH']
     check_path(project_path)
 
@@ -97,7 +97,7 @@ def create_django_files(project, setup):
     # Loop over all apps, only build apps "use"
     for app in apps:
         if app['use']:
-            create_app_files(rest, app, environment, project_path, setup)
+            create_app_files(rest, app, environment, project_path)
         else:
             if project['REMOVE_UNUSED']:
                 # remove path

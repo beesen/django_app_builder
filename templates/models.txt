@@ -3,24 +3,23 @@
 #-------------------------------------------------------------------------------
 from django.db import models
 
+# Import models for foreign keys
 {% for field in model.fields %}
     {% if field.type == 'ForeignKey' %}
-from {{ field.app_name }}.models import {{ field.model_name }}
+from {{ field.app_name }}.models import {{ field.to }}
     {% endif %}
 {% endfor %}
 
 # Create your models here.
 class {{model.name}}(models.Model):
     {% for field in model.fields %}
-        {% if field.type == 'ForeignKey' %}
-{# handle ForeignKey #}
-    {{field.name}} = models.{{field.type}}({{field.model_name}}, on_delete=models.CASCADE)
-        {% elif field.type == 'CharField' %}
-    {% include 'model/charfield.txt' -%}
-        {% elif field.type == 'NumberField' %}
-    {% include 'model/numberfield.txt' -%}
+        {% if field.type == 'ForeignKey' or
+        field.type == 'ManyToManyField' or
+        field.type == 'OneToOneField' %}
+{# handle these field types #}
+    {{field.name}} = models.{{field.type}}('{{field.to}}', {{field.arguments}})
         {% else %}
-    {{field.name}} = models.{{field.type}}(default={{field.default}})
+    {{field.name}} = models.{{field.type}}({{field.arguments}})
         {% endif %}
     {% endfor %}
 

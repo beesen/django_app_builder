@@ -7,7 +7,7 @@ APPS:
   # 1 projects
   #
   - app_name: projects
-    use: false
+    use: true
     model:
       name: Project
       fields:
@@ -21,14 +21,14 @@ APPS:
   # 2 questions
   #
   - app_name: questions
-    use: false
+    use: true
     model:
       name: Question
       fields:
         - name: project
           type: ForeignKey
-          model_name: Project
-          app_name: projects
+          to: Project
+          on_delete: models.CASCADE
         - name: question_text
           type: CharField
           max_length: 256
@@ -38,14 +38,14 @@ APPS:
   # 3 question_answeralternatives
   #
   - app_name: question_answeralternatives
-    use: false
+    use: true
     model:
       name: QuestionAnswerAlternative
       fields:
         - name: question
           type: ForeignKey
-          app_name: questions
-          model_name: Question
+          to: Question
+          on_delete: models.CASCADE
         - name: answeralternative_text
           type: CharField
           max_length: 256
@@ -57,14 +57,14 @@ APPS:
   # 4 question_statements
   #
   - app_name: question_statements
-    use: false
+    use: true
     model:
       name: QuestionStatement
       fields:
         - name: question
           type: ForeignKey
-          app_name: questions
-          model_name: Question
+          to: Question
+          on_delete: models.CASCADE
         - name: statement_text
           type: CharField
           max_length: 256
@@ -76,14 +76,14 @@ APPS:
   # 5 surveys
   #
   - app_name: surveys
-    use: false
+    use: true
     model:
       name: Surveys
       fields:
         - name: project
           type: ForeignKey
-          app_name: projects
-          model_name: Project
+          to: Project
+          on_delete: models.CASCADE
         - name: name
           type: CharField
           max_length: 256
@@ -94,14 +94,14 @@ APPS:
   # 6 survey_pages
   #
   - app_name: survey_pages
-    use: false
+    use: true
     model:
       name: SurveyPage
       fields:
         - name: survey
           type: ForeignKey
-          app_name: surveys
-          model_name: Survey
+          to: Survey
+          on_delete: models.CASCADE
         - name: page_sequence_nr
           type: IntegerField
         - name: page_text
@@ -113,18 +113,18 @@ APPS:
   # 7 survey_page_questions
   #
   - app_name: survey_page_questions
-    use: false
+    use: true
     model:
       name: SurveyPageQuestion
       fields:
         - name: survey_page
           type: ForeignKey
-          app_name: survey_pages
-          model_name: SurveyPage
+          to: SurveyPage
+          on_delete: models.CASCADE
         - name: question
           type: ForeignKey
-          app_name: questions
-          model_name: Question
+          to: Question
+          on_delete: models.CASCADE
         - name: question_sequence_nr
           type: IntegerField
       meta:
@@ -133,29 +133,29 @@ APPS:
   # 9 survey_page_question_answeralternatives
   #
   - app_name: survey_page_question_answeralternatives
-    use: false
+    use: true
     model:
       name: SurveyPageQuestionAnswerAlternative
       fields:
         - name: survey_page_question
           type: ForeignKey
-          app_name: survey_page_question
-          model_name: SurveyPageQuestions
+          to: SurveyPageQuestions
+          on_delete: models.CASCADE
         - name: question_answeralternative
           type: ForeignKey
-          app_name: questions_answeralternatives
-          model_name: QuestionAnswerAlternative
+          to: QuestionAnswerAlternative
+          on_delete: models.CASCADE
         - name: next_survey_page
           type: ForeignKey
-          app_name: survey_pages
-          model_name: SurveyPage
+          to: SurveyPage
+          on_delete: models.CASCADE
       meta:
         db_table: survey_page_question_answeralternatives
   #---------------------------------------------------------------------------------------
   # 10 questiontypes
   #
   - app_name: questiontypes
-    use: false
+    use: true
     model:
       name: QuestionType
       fields:
@@ -177,7 +177,7 @@ APPS:
   # 11 testing with most used model fields
   #
   - app_name: tests
-    use: true
+    use: false
     model:
       name: Test
       fields:
@@ -224,20 +224,21 @@ APPS:
           type: UUIDField
         - name: name_13
           type: ForeignKey
-          to: field
-          on_delete: CASCADE
+          to: name_13
+          on_delete: models.CASCADE
+          related_name: related_name
           blank: true
-          null: true
+          'null': true
         - name: name_14
           type: ManyToManyField
           to: field
-          on_delete: CASCADE
+          on_delete: models.CASCADE
           blank: true
-          null: true
+          'null': true
         - name: name_15
           type: OneToOneField
           to: field
-          on_delete: CASCADE
+          on_delete: models.CASCADE
           parent_link: false
       meta:
         db_table: tests
