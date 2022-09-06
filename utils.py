@@ -13,7 +13,7 @@ def read_yaml_file(yaml_file):
     return data
 
 
-def check_path(path, silent=False):
+def check_path(path, create_init=True, silent=False):
     if os.path.isdir(path):
         if not silent:
             print(f"{path} exists...")
@@ -21,6 +21,10 @@ def check_path(path, silent=False):
         os.mkdir(path)
         if not silent:
             print(f"{path} created...")
+    if create_init:
+        # Do not create this file in project path
+        file = path + "__init__.py"
+        open(file, mode='w').close()
 
 
 def remove_path(path, silent=False):

@@ -11,7 +11,7 @@ def build_arguments_as_list(field):
     # Loop over all keys in field dict
     for k, v in field.items():
         # Skip "name" and "type"
-        if k == 'name' or k == 'type' or k == 'to':
+        if k == 'name' or k == 'type' or k == 'to' or k == 'app_name':
             pass
         else:
             if v == 'none':
@@ -25,14 +25,42 @@ def build_arguments_as_list(field):
     return arguments_as_string
 
 
-def create_file(app, environment, project_path, unit):
+def build_field_names_as_list(fields):
+    field_names = []
+    # Loop over all fields
+    for field in fields:
+        field_names.append(field['name'])
+
+    return field_names
+
+
+def get_app_name(model, apps):
+    """
+    Return app_name for model
+    :param model:
+    :type model:
+    :return:
+    :rtype:
+    """
+    for app in apps:
+        if app['model']['name'] == model:
+            help = app['app_name']
+            return app['app_name']
+    return '?'
+
+def create_file(app, environment, project_path, unit, apps):
     # create {{units}}.py
     template_name = f"{unit}.txt"
     template = environment.get_template(template_name)
+    fields= app['model']['fields']
     if unit == 'models':
         # Loop over all fields of this model
-        for field in app['model']['fields']:
+        for field in fields:
+            if field['type'] == 'ForeignKey':
+                field['app_name'] = get_app_name(field['to'], apps)
             field['arguments'] = build_arguments_as_list(field)
+    if unit == 'serializers':
+        app['model']['all_fields'] = build_field_names_as_list(fields)
     content = template.render(app)
 
     app_path = project_path + app['app_name'] + '/'
@@ -41,38 +69,40 @@ def create_file(app, environment, project_path, unit):
     with open(file_name, mode="w", encoding="utf-8") as file:
         file.write(content)
         print(f"... created {file_name}")
+    migrations_path = project_path + app['app_name'] + '/migrations/'
+    check_path(migrations_path, create_init=True)
 
 
-def create_templates(app, environment, template_name):
-    # create urls.py
-    template = environment.get_template(template_name)
-    content = template.render(app)
-    print(content)
+# def create_templates(app, environment, template_name):
+#     # create urls.py
+#     template = environment.get_template(template_name)
+#     content = template.render(app)
+#     print(content)
+#
+#
+# def create_views(app, environment, project_path):
+#     # create views.py
+#     create_file(app, environment, project_path, 'views')
+#
+#
+# def create_urls(app, environment, template_name):
+#     # create urls.py
+#     template = environment.get_template(template_name)
+#     content = template.render(app)
+#     print(content)
 
 
-def create_views(app, environment, project_path):
-    # create views.py
-    create_file(app, environment, project_path, 'views')
-
-
-def create_urls(app, environment, template_name):
-    # create urls.py
-    template = environment.get_template(template_name)
-    content = template.render(app)
-    print(content)
-
-
-def create_app_files(rest, app, environment, project_path):
-    create_file(app, environment, project_path, 'models')
+def create_app_files(rest, app, environment, project_path, apps):
+    create_file(app, environment, project_path, 'models', apps)
     if rest:
-        create_file(app, environment, project_path, 'serializers')
-        create_file(app, environment, project_path, 'views')
-        create_file(app, environment, project_path, 'urls')
+        create_file(app, environment, project_path, 'serializers', apps)
+        create_file(app, environment, project_path, 'views', apps)
+        create_file(app, environment, project_path, 'urls', apps)
     # else:
     #     create_templates(app_name, model)
     #     create_views(app_name, model)
     #     create_urls(app_name, model)
-    create_file(app, environment, project_path, 'admin')
+    create_file(app, environment, project_path, 'admin', apps)
 
 
 def remove_app_files(app, project_path):
@@ -84,7 +114,7 @@ def remove_app_files(app, project_path):
 
 def create_django_files(project):
     project_path = project['PROJECT_PATH']
-    check_path(project_path)
+    check_path(project_path, create_init=False)
 
     # Define yaml's environment and templates dir
     environment = Environment(
@@ -97,9 +127,20 @@ def create_django_files(project):
     # Loop over all apps, only build apps "use"
     for app in apps:
         if app['use']:
-            create_app_files(rest, app, environment, project_path)
+            create_app_files(rest, app, environment, project_path, apps)
         else:
             if project['REMOVE_UNUSED']:
                 # remove path
                 app_path = project_path + app['app_name'] + '/'
                 remove_path(app_path)
+    # for settings.py
+    print("for settings.py")
+    for app in apps:
+        print(f"'{app['app_name']}',")
+    print("")
+    print("for urls.py")
+    for app in apps:
+        print(f"from {app['app_name']}.views import {app['model']['name']}ViewSet")
+    print("")
+    for app in apps:
+        print(f"router.register(r'{app['app_name']}', {app['model']['name']}ViewSet),")

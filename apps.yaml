@@ -29,9 +29,37 @@ APPS:
           type: ForeignKey
           to: Project
           on_delete: models.CASCADE
+        - name: questiontype
+          type: ForeignKey
+          to: QuestionType
+          on_delete: models.CASCADE
+        - name: datatype
+          type: ForeignKey
+          to: DataType
+          on_delete: models.CASCADE
         - name: question_text
           type: CharField
           max_length: 256
+        - name: display_direction
+          type: CharField
+          max_length: 10
+          blank: true
+          'null': true
+        - name: add_text_box_other
+          type: BooleanField
+          default: false
+        - name: spss_variable
+          type: CharField
+          max_length: 32
+        - name: spss_variable_label
+          type: CharField
+          max_length: 256
+        - name: spss_missing_value
+          type: CharField
+          max_length: 16
+        - name: spss_format
+          type: CharField
+          max_length: 16
       meta:
         db_table: questions
   #---------------------------------------------------------------------------------------
@@ -45,12 +73,18 @@ APPS:
         - name: question
           type: ForeignKey
           to: Question
+          related_name: question_answeralternatives
           on_delete: models.CASCADE
         - name: answeralternative_text
           type: CharField
           max_length: 256
         - name: answeralternative_sequence_nr
           type: IntegerField
+        - name: score
+          type: IntegerField
+        - name: spss_value_label
+          type: CharField
+          max_length: 256
       meta:
         db_table: question_answeralternatives
   #---------------------------------------------------------------------------------------
@@ -64,12 +98,25 @@ APPS:
         - name: question
           type: ForeignKey
           to: Question
+          related_name: question_statements
           on_delete: models.CASCADE
         - name: statement_text
           type: CharField
           max_length: 256
         - name: statement_sequence_nr
           type: IntegerField
+        - name: spss_variable
+          type: CharField
+          max_length: 32
+        - name: spss_variable_label
+          type: CharField
+          max_length: 256
+        - name: spss_missing_value
+          type: CharField
+          max_length: 16
+        - name: spss_format
+          type: CharField
+          max_length: 16
       meta:
         db_table: question_statements
   #---------------------------------------------------------------------------------------
@@ -78,7 +125,7 @@ APPS:
   - app_name: surveys
     use: true
     model:
-      name: Surveys
+      name: Survey
       fields:
         - name: project
           type: ForeignKey
@@ -89,7 +136,7 @@ APPS:
           max_length: 256
       meta:
         db_table: surveys
-      str: None
+      str: name
   #---------------------------------------------------------------------------------------
   # 6 survey_pages
   #
@@ -130,7 +177,7 @@ APPS:
       meta:
         db_table: survey_page_questions
   #---------------------------------------------------------------------------------------
-  # 9 survey_page_question_answeralternatives
+  # 8 survey_page_question_answeralternatives
   #
   - app_name: survey_page_question_answeralternatives
     use: true
@@ -139,7 +186,7 @@ APPS:
       fields:
         - name: survey_page_question
           type: ForeignKey
-          to: SurveyPageQuestions
+          to: SurveyPageQuestion
           on_delete: models.CASCADE
         - name: question_answeralternative
           type: ForeignKey
@@ -152,7 +199,7 @@ APPS:
       meta:
         db_table: survey_page_question_answeralternatives
   #---------------------------------------------------------------------------------------
-  # 10 questiontypes
+  # 9 questiontypes
   #
   - app_name: questiontypes
     use: true
@@ -174,71 +221,15 @@ APPS:
         ordering:
           - 'name'
   #---------------------------------------------------------------------------------------
-  # 11 testing with most used model fields
+  # 10 datatypes
   #
-  - app_name: tests
-    use: false
+  - app_name: datatypes
+    use: true
     model:
-      name: Test
+      name: DataType
       fields:
-        - name: name_1
-          type: BooleanField
-          default: false
-        - name: name_2
+        - name: name
           type: CharField
-          max_length: 10
-        - name: name_3
-          type: DateField
-          auto_now: true
-          auto_now_add: true
-        - name: name_4
-          type: DateTimeField
-          auto_now: true
-          auto_now_add: true
-        - name: name_5
-          type: DecimalField
-          max_digits: 10
-          max_decimal_places: 2
-        - name: name_6
-          type: EmailField
-          max_length: 10
-        - name: name_7
-          type: FileField
-          upload_to: path
-          storage: none
-          max_length: 100
-        - name: name_8
-          type: ImageField
-          upload_to: path
-          height_field: none
-          width_field: none
-          max_length: 100
-        - name: name_9
-          type: IntegerField
-        - name: name_10
-          type: TextField
-        - name: name_11
-          type: URLField
-          max_length: 200
-        - name: name_12
-          type: UUIDField
-        - name: name_13
-          type: ForeignKey
-          to: name_13
-          on_delete: models.CASCADE
-          related_name: related_name
-          blank: true
-          'null': true
-        - name: name_14
-          type: ManyToManyField
-          to: field
-          on_delete: models.CASCADE
-          blank: true
-          'null': true
-        - name: name_15
-          type: OneToOneField
-          to: field
-          on_delete: models.CASCADE
-          parent_link: false
+          max_length: 256
       meta:
-        db_table: tests
+        db_table: datatypes

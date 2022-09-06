@@ -3,6 +3,10 @@ Same as django startapp but more :-)
 With the use of a YAML file the following files are created:
 admin.py, models.py, serializers.py, urls.py, vieuws.py
 
+See https://www.django-rest-framework.org/api-guide/relations/#nested-relationships
+for "Nested relationships"
+
+
 TODO:
 Additional informatie is found in settings.py
 

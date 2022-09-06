@@ -17,7 +17,7 @@ class {{model.name}}(models.Model):
         field.type == 'ManyToManyField' or
         field.type == 'OneToOneField' %}
 {# handle these field types #}
-    {{field.name}} = models.{{field.type}}('{{field.to}}', {{field.arguments}})
+    {{field.name}} = models.{{field.type}}({{field.to}}, {{field.arguments}})
         {% else %}
     {{field.name}} = models.{{field.type}}({{field.arguments}})
         {% endif %}
@@ -28,3 +28,8 @@ class {{model.name}}(models.Model):
         ordering = ["{{model.meta.ordering| join("\", \"") }}"]
         {% endif %}
         db_table = "{{model.meta.db_table}}"
+
+    {% if model.str %}
+    def __str__(self):
+        return self.{{ model.str }}
+    {% endif %}

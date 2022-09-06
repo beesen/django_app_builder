@@ -1,10 +1,10 @@
 #-------------------------------------------------------------------------------
 # views.py for {{ app_name }}
 #-------------------------------------------------------------------------------
-from rest_framework import serializers
+from rest_framework import viewsets
 
-from .models import {{model.name}}
-from .serializers import {{model.name}}Serializer
+from {{app_name}}.models import {{model.name}}
+from {{app_name}}.serializers import {{model.name}}Serializer
 
 # Create your views here.
 class {{model.name}}ViewSet(viewsets.ModelViewSet):
