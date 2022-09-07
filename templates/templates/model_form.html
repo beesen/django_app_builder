@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="django-container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <h5 class="card-header">{{ card_title }}</h5>
+                    <div class="card-body">
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <button type="submit" class="btn btn-sm btn-primary"
+                                    name="update">{{ btn_label }}
+                            </button>
+                            {% if url_name == 'create' %}
+                                <button type="reset" name="reset"
+                                        class="btn btn-sm ml-2 float-right">Clear form
+                                </button>
+                            {% endif %}
+                            <a class="btn btn-primary btn-sm float-right"
+                               href="{% url 'buildings:list' %}">Cancel
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

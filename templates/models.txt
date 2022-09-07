@@ -1,12 +1,12 @@
 #-------------------------------------------------------------------------------
-# models.py for {{ app_name }}
+# models.py for {{ app }}
 #-------------------------------------------------------------------------------
 from django.db import models
 
 # Import models for foreign keys
 {% for field in model.fields %}
     {% if field.type == 'ForeignKey' %}
-from {{ field.app_name }}.models import {{ field.to }}
+from {{ field.app }}.models import {{ field.to }}
     {% endif %}
 {% endfor %}
 
@@ -24,10 +24,10 @@ class {{model.name}}(models.Model):
     {% endfor %}
 
     class Meta:
-        {% if model.meta.ordering %}
-        ordering = ["{{model.meta.ordering| join("\", \"") }}"]
-        {% endif %}
         db_table = "{{model.meta.db_table}}"
+        {% if model.meta.ordering %}
+        ordering = {{model.meta.ordering.fields_as_list}}
+        {% endif %}
 
     {% if model.str %}
     def __str__(self):

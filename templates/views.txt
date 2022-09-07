@@ -1,6 +1,7 @@
 #-------------------------------------------------------------------------------
 # views.py for {{ app_name }}
 #-------------------------------------------------------------------------------
+{% if rest %}
 from rest_framework import viewsets
 
 from {{app_name}}.models import {{model.name}}
@@ -10,3 +11,12 @@ from {{app_name}}.serializers import {{model.name}}Serializer
 class {{model.name}}ViewSet(viewsets.ModelViewSet):
     queryset = {{model.name}}.objects.all()
     serializer_class = {{model.name}}Serializer
+{% else %}
+from django.views.generic import ListView
+
+from {{app_name}}.models import {{model.name}}
+
+
+class {{model.name}}ListView(ListView):
+    model = {{model.name}}
+{% endif %}

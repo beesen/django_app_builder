@@ -6,7 +6,7 @@ APPS:
   #---------------------------------------------------------------------------------------
   # 1 projects
   #
-  - app_name: projects
+  - app: projects
     use: true
     model:
       name: Project
@@ -16,11 +16,14 @@ APPS:
           max_length: 256
       meta:
         db_table: projects
+        ordering:
+          fields:
+            - name: name
       str: name
   #---------------------------------------------------------------------------------------
   # 2 questions
   #
-  - app_name: questions
+  - app: questions
     use: true
     model:
       name: Question
@@ -65,7 +68,7 @@ APPS:
   #---------------------------------------------------------------------------------------
   # 3 question_answeralternatives
   #
-  - app_name: question_answeralternatives
+  - app: question_answeralternatives
     use: true
     model:
       name: QuestionAnswerAlternative
@@ -87,10 +90,14 @@ APPS:
           max_length: 256
       meta:
         db_table: question_answeralternatives
+        ordering:
+          fields:
+            - name: question_id
+            - name: answeralternative_sequence_nr
   #---------------------------------------------------------------------------------------
   # 4 question_statements
   #
-  - app_name: question_statements
+  - app: question_statements
     use: true
     model:
       name: QuestionStatement
@@ -119,10 +126,14 @@ APPS:
           max_length: 16
       meta:
         db_table: question_statements
+        ordering:
+          fields:
+            - name: question_id
+            - name: statement_sequence_nr
   #---------------------------------------------------------------------------------------
   # 5 surveys
   #
-  - app_name: surveys
+  - app: surveys
     use: true
     model:
       name: Survey
@@ -136,11 +147,15 @@ APPS:
           max_length: 256
       meta:
         db_table: surveys
+        ordering:
+          fields:
+            - name: project_id
+            - name: name
       str: name
   #---------------------------------------------------------------------------------------
   # 6 survey_pages
   #
-  - app_name: survey_pages
+  - app: survey_pages
     use: true
     model:
       name: SurveyPage
@@ -156,10 +171,14 @@ APPS:
           max_length: 256
       meta:
         db_table: survey_pages
+        ordering:
+          fields:
+            - name: survey_id
+            - name: page_sequence_nr
   #---------------------------------------------------------------------------------------
   # 7 survey_page_questions
   #
-  - app_name: survey_page_questions
+  - app: survey_page_questions
     use: true
     model:
       name: SurveyPageQuestion
@@ -174,12 +193,18 @@ APPS:
           on_delete: models.CASCADE
         - name: question_sequence_nr
           type: IntegerField
+        - name: next_question_sequence_nr
+          type: IntegerField
       meta:
         db_table: survey_page_questions
+        ordering:
+          fields:
+            - name: survey_page_id
+            - name: question_sequence_nr
   #---------------------------------------------------------------------------------------
   # 8 survey_page_question_answeralternatives
   #
-  - app_name: survey_page_question_answeralternatives
+  - app: survey_page_question_answeralternatives
     use: true
     model:
       name: SurveyPageQuestionAnswerAlternative
@@ -192,16 +217,16 @@ APPS:
           type: ForeignKey
           to: QuestionAnswerAlternative
           on_delete: models.CASCADE
-        - name: next_survey_page
-          type: ForeignKey
-          to: SurveyPage
-          on_delete: models.CASCADE
+        - name: next_page_sequence_nr
+          type: integer
+        - name: next_question_sequence_nr
+          type: integer
       meta:
         db_table: survey_page_question_answeralternatives
   #---------------------------------------------------------------------------------------
   # 9 questiontypes
   #
-  - app_name: questiontypes
+  - app: questiontypes
     use: true
     model:
       name: QuestionType
@@ -219,11 +244,12 @@ APPS:
       meta:
         db_table: questiontypes
         ordering:
-          - 'name'
+          fields:
+            - name: name
   #---------------------------------------------------------------------------------------
   # 10 datatypes
   #
-  - app_name: datatypes
+  - app: datatypes
     use: true
     model:
       name: DataType
@@ -233,3 +259,6 @@ APPS:
           max_length: 256
       meta:
         db_table: datatypes
+        ordering:
+          fields:
+            - name: name

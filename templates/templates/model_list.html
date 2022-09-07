@@ -1,0 +1,31 @@
+<div class="card">
+    <h5 class="card-header">Buildings
+    </h5>
+    <div class="card-body">
+        {% if building_list %}
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for building in building_list %}
+                <tr>
+                    <td></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>No buildings found...</p>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-primary btn-sm"
+           href="">New building</a>
+    </div>
+    {% endif %}
+</div>

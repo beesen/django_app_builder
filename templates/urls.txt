@@ -2,9 +2,11 @@
 # urls.py for {{ app_name }}
 #-------------------------------------------------------------------------------
 from django.urls import path
-
+{% if rest %}
 from .views import {{model.name}}ViewSet
 
 urlpatterns = [
     path(r'{{app_name}}', {{model.name}}ViewSet),
 ]
+{% else %}
+{% endif %}

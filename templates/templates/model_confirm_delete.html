@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="django-container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="card">
+                    <h5 class="card-header">Confirm</h5>
+                    <div class="card-body">
+                        <form action='.' method='POST'>
+                            {% csrf_token %}
+                            <p class="card-text">Do you want to delete the building
+                                "{{ building }}"</p>
+                            <p>
+                                <a class="btn btn-sm"
+                                   href="{% url 'buildings:list' %}">No</a>
+                                <button type="submit"
+                                        class="btn btn-sm bg-red float-right">Yes
+                                </button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
