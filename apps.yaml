@@ -1,5 +1,5 @@
 PROJECT: test
-PROJECT_PATH: test/
+PROJECT_PATH: PRM_DATA/
 REST: true
 REMOVE_UNUSED: true
 APPS:
@@ -193,8 +193,12 @@ APPS:
           on_delete: models.CASCADE
         - name: question_sequence_nr
           type: IntegerField
-        - name: next_question_sequence_nr
-          type: IntegerField
+        - name: next_survey_page_question
+          type: ForeignKey
+          to: self
+          on_delete: models.SET_NULL
+          blank: true
+          'null': true
       meta:
         db_table: survey_page_questions
         ordering:
@@ -217,10 +221,20 @@ APPS:
           type: ForeignKey
           to: QuestionAnswerAlternative
           on_delete: models.CASCADE
-        - name: next_page_sequence_nr
-          type: integer
-        - name: next_question_sequence_nr
-          type: integer
+        - name: next_survey_page
+          type: ForeignKey
+          to: SurveyPage
+          related_name: next_survey_pages
+          on_delete: models.SET_NULL
+          blank: true
+          'null': true
+        - name: next_survey_page_question
+          type: ForeignKey
+          to: SurveyPageQuestion
+          related_name: next_survey_page_questions
+          on_delete: models.SET_NULL
+          blank: true
+          'null': true
       meta:
         db_table: survey_page_question_answeralternatives
   #---------------------------------------------------------------------------------------

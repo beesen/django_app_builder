@@ -5,7 +5,7 @@ from django.db import models
 
 # Import models for foreign keys
 {% for field in model.fields %}
-    {% if field.type == 'ForeignKey' %}
+    {% if field.type == 'ForeignKey' and field.to != 'self' %}
 from {{ field.app }}.models import {{ field.to }}
     {% endif %}
 {% endfor %}
@@ -17,7 +17,11 @@ class {{model.name}}(models.Model):
         field.type == 'ManyToManyField' or
         field.type == 'OneToOneField' %}
 {# handle these field types #}
+        {% if field.to == 'self' %}
+    {{field.name}} = models.{{field.type}}('{{field.to}}', {{field.arguments}})
+        {% else %}
     {{field.name}} = models.{{field.type}}({{field.to}}, {{field.arguments}})
+        {% endif %}
         {% else %}
     {{field.name}} = models.{{field.type}}({{field.arguments}})
         {% endif %}
